@@ -1,40 +1,18 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jody/constraints.dart';
 import 'package:jody/cubit/profile_cubit.dart';
 
-class PickImageWidget extends StatefulWidget {
-  const PickImageWidget({Key? key}) : super(key: key);
-
-  @override
-  _PickImageWidgetState createState() => _PickImageWidgetState();
-}
-
-class _PickImageWidgetState extends State<PickImageWidget> {
-  late ProfileCubit profileCubit;
-  late Dio dio;
-
-  @override
-  void initState() {
-    super.initState();
-    dio = Dio();
-    profileCubit = context.read<ProfileCubit>();
-  }
+class PickImageWidget extends StatelessWidget {
+  PickImageWidget({Key? key}) : super(key: key);
 
   bool isImagePickerActive = false;
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ProfileCubit, ProfileState>(
-      listener: (context, state) {
-        if (state is UploadPicture) {
-          setState(() {
-            isImagePickerActive = false;
-          });
-        }
-      },
+      listener: (context, state) {},
       builder: (context, state) {
         if (state is ProfileLoaded) {
           return SizedBox(
@@ -53,16 +31,15 @@ class _PickImageWidgetState extends State<PickImageWidget> {
                       onTap: () async {
                         if (!isImagePickerActive) {
                           isImagePickerActive = true;
-                          ImagePicker()
-                              .pickImage(source: ImageSource.gallery)
-                              .then((value) => context
-                                  .read<ProfileCubit>()
-                                  .updateProfilePic(value!));
+                          final pickedImage = await ImagePicker()
+                              .pickImage(source: ImageSource.gallery);
+                          if (pickedImage != null) {
+                            ProfileCubit.get(context)
+                                .uploadImageToApi(pickedImage);
+                            isImagePickerActive = false;
+                            await Future.delayed(Duration(seconds: 1));
+                          }
                         }
-                        isImagePickerActive = true;
-                        setState(() {
-                          profileCubit.getUserProfile(dio);
-                        });
                       },
                       child: Container(
                         height: 50,

@@ -6,9 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:jody/cache/cache_helper.dart';
 import 'package:jody/core/api/end_ponits.dart';
 import 'package:jody/core/errors/exceptions.dart';
-import 'package:jody/core/functions/upload_images_to_api.dart';
 import 'package:jody/models/user_model';
-import 'package:jody/services/image_repostory.dart';
 import 'package:path/path.dart' as path;
 
 part 'profile_state.dart';
@@ -24,6 +22,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(UploadPicture());
   }
 
+  Profile? profileIns;
   Future getUserProfile(Dio dio) async {
     if (state is! ProfileLoading) {
       emit(ProfileLoading());
@@ -47,7 +46,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
-  Future updateFirstName(String firstName, Dio dio,
+  void updateFirstName(String firstName, Dio dio,
       TextEditingController firstNameController) async {
     try {
       var updatedFirstNameResponse = await dio.put(
@@ -55,7 +54,7 @@ class ProfileCubit extends Cubit<ProfileState> {
         data: {'firstName': firstName},
         options: Options(headers: {
           'token':
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFjNmI5MzY3OTkzMmU2Nzc3MTg5YWMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxMzIyNjQ3MX0.xdh7vU90JVafhJzzXua0o4X6532iC8vxYcpMSfEbQUU'
+              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjMwNzI5NjAxMGI5ZTY2MWRiYWZiNmIiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNDQ1MTM2NH0.J1AatzRIpUdil5fjHg7w0SLJYQP6x_Fboop37EC1glY'
         }),
       );
       print('Response Status Code: ${updatedFirstNameResponse.statusCode}');
@@ -63,19 +62,12 @@ class ProfileCubit extends Cubit<ProfileState> {
       print(
           'first name: ${updatedFirstNameResponse.data['user']['firstName']}');
       if (updatedFirstNameResponse.statusCode == 200) {
-        final updatedProfileResponse = await getUserProfile(dio);
-        if (updatedProfileResponse != null &&
-            updatedProfileResponse.statusCode == 200) {
-          final updatedProfile =
-              Profile.fromJson(updatedProfileResponse.data['user']);
-          emit(ProfileLoaded(updatedProfile));
-          firstNameController.text = updatedProfile.firstName ?? '';
-        } else {
-          emit(ProfileError('Failed to fetch updated profile.'));
-        }
+        getUserProfile(dio);
+        final updatedProfile = Profile.fromJson(updatedFirstNameResponse.data);
+        emit(FirstNameUpdated(updatedProfile));
+        firstNameController.text = updatedProfile.firstName ?? '';
       } else {
-        emit(ProfileError(
-            'Failed to update first name. Status Code: ${updatedFirstNameResponse.statusCode}'));
+        emit(ProfileError('Failed to fetch updated profile.'));
       }
     } on ServerException catch (e) {
       print('Error updating first name: $e');
@@ -83,18 +75,38 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
-uploadPicture() async {
-  emit(ProfileLoading());
-  ImageRepository imageRepository = ImageRepository();
-  final response = await imageRepository.uploadImageToApi(profilePic: profilePic!);
-  response.fold(
-    (errorMessage) => emit(ProfileError(errorMessage)),
-    (profile) => emit(ProfileLoaded(profile)),
-  );
-}
+  Future uploadImageToApi(XFile image) async {
+    try {
+      Dio dio = Dio(); // Initialize Dio
+      MultipartFile file = await MultipartFile.fromFile(
+        image.path,
+        filename: path.basename(image.path),
+        contentType:
+            MediaType('image', path.extension(image.path).substring(1)),
+      );
+      FormData formData = FormData.fromMap({'profileImg': file});
+      Response response = await dio.put(
+        'https://kemet-gp2024.onrender.com/api/v1/auth/updateProfile',
+        data: formData,
+        options: Options(headers: {
+          'token':
+              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjMwNzI5NjAxMGI5ZTY2MWRiYWZiNmIiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNDQ1MTM2NH0.J1AatzRIpUdil5fjHg7w0SLJYQP6x_Fboop37EC1glY'
+        }),
+      );
+      if (response.statusCode == 200) {
+        final updatedProfile = Profile.fromJson(response.data);
+        emit(ProfileLoaded(updatedProfile));
+      } else {
+        print('Failed to upload image. Status Code: ${response.statusCode}');
+        print('Response Data: ${response.data}');
+        return null;
+      }
+    } on ServerException catch (e) {
+      emit(ProfileError(e.errModel.errorMessage));
+    }
+  }
 
-
-  Future updateLastName(String lastName, Dio dio,
+  void updateLastName(String lastName, Dio dio,
       TextEditingController lastNameController) async {
     final token = CacheHelper().getData(key: ApiKey.token);
     try {
@@ -103,26 +115,21 @@ uploadPicture() async {
         data: {'lastName': lastName},
         options: Options(headers: {
           'token':
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFjNmI5MzY3OTkzMmU2Nzc3MTg5YWMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxMzIyNjQ3MX0.xdh7vU90JVafhJzzXua0o4X6532iC8vxYcpMSfEbQUU'
+              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjMwNzI5NjAxMGI5ZTY2MWRiYWZiNmIiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNDQ1MTM2NH0.J1AatzRIpUdil5fjHg7w0SLJYQP6x_Fboop37EC1glY'
         }),
       );
       print('Response Status Code: ${updatedLastNameResponse.statusCode}');
       print('Response Data: ${updatedLastNameResponse.data}');
       print('last name: ${updatedLastNameResponse.data['user']['lastName']}');
       if (updatedLastNameResponse.statusCode == 200) {
-        final updatedProfileResponse = await getUserProfile(dio);
-        if (updatedProfileResponse != null &&
-            updatedProfileResponse.statusCode == 200) {
-          final updatedProfile =
-              Profile.fromJson(updatedProfileResponse.data['user']);
+        getUserProfile(dio);
+        final updatedProfile = Profile.fromJson(updatedLastNameResponse.data);
+        Future.microtask(() {
           emit(ProfileLoaded(updatedProfile));
-          lastNameController.text = updatedProfile.firstName ?? '';
-        } else {
-          emit(ProfileError('Failed to fetch updated profile.'));
-        }
+          lastNameController.text = updatedProfile.lastName ?? '';
+        });
       } else {
-        emit(ProfileError(
-            'Failed to update first name. Status Code: ${updatedLastNameResponse.statusCode}'));
+        emit(ProfileError('Failed to fetch updated profile.'));
       }
     } on ServerException catch (e) {
       print('Error updating first name: $e');
@@ -139,26 +146,21 @@ uploadPicture() async {
         data: {'city': city},
         options: Options(headers: {
           'token':
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFjNmI5MzY3OTkzMmU2Nzc3MTg5YWMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxMzIyNjQ3MX0.xdh7vU90JVafhJzzXua0o4X6532iC8vxYcpMSfEbQUU'
+              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjMwNzI5NjAxMGI5ZTY2MWRiYWZiNmIiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNDQ1MTM2NH0.J1AatzRIpUdil5fjHg7w0SLJYQP6x_Fboop37EC1glY'
         }),
       );
       print('Response Status Code: ${updatedCityResponse.statusCode}');
       print('Response Data: ${updatedCityResponse.data}');
       print('last name: ${updatedCityResponse.data['user']['firstName']}');
       if (updatedCityResponse.statusCode == 200) {
-        final updatedProfileResponse = await getUserProfile(dio);
-        if (updatedProfileResponse != null &&
-            updatedProfileResponse.statusCode == 200) {
-          final updatedProfile =
-              Profile.fromJson(updatedProfileResponse.data['user']);
+        getUserProfile(dio);
+        final updatedProfile = Profile.fromJson(updatedCityResponse.data);
+        Future.microtask(() {
           emit(ProfileLoaded(updatedProfile));
-          cityController.text = updatedProfile.firstName ?? '';
-        } else {
-          emit(ProfileError('Failed to fetch updated profile.'));
-        }
+          cityController.text = updatedProfile.city ?? '';
+        });
       } else {
-        emit(ProfileError(
-            'Failed to update first name. Status Code: ${updatedCityResponse.statusCode}'));
+        emit(ProfileError('Failed to fetch updated profile.'));
       }
     } on ServerException catch (e) {
       print('Error updating first name: $e');
@@ -221,7 +223,7 @@ uploadPicture() async {
               "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjMwNzI5NjAxMGI5ZTY2MWRiYWZiNmIiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNDQ1MTM2NH0.J1AatzRIpUdil5fjHg7w0SLJYQP6x_Fboop37EC1glY"
         }),
       );
-      final profileImg = response.data['profileImg'];
+      //final profileImg = response.data['profileImg'];
       final profile = Profile.fromJson(response.data);
 
       print(profile);
