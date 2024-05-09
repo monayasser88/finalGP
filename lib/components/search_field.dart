@@ -8,11 +8,13 @@ class SearchField extends StatelessWidget {
       required this.label,
       required this.hint,
       required this.controller,
-      required this.onPressed});
+      required this.onPressed,
+      required this.onChanged});
   final String label;
   final String hint;
   final TextEditingController controller;
   void Function()? onPressed;
+  void Function(String)? onChanged;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -20,6 +22,7 @@ class SearchField extends StatelessWidget {
       height: 44,
       child: TextFormField(
         controller: controller,
+        onChanged: onChanged,
         decoration: InputDecoration(
             labelText: label,
             hintText: hint,

@@ -32,7 +32,7 @@ class ProfileCubit extends Cubit<ProfileState> {
         'https://kemet-gp2024.onrender.com/api/v1/auth/profile',
         options: Options(headers: {
           'token':
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjMwNzI5NjAxMGI5ZTY2MWRiYWZiNmIiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNDQ1MTM2NH0.J1AatzRIpUdil5fjHg7w0SLJYQP6x_Fboop37EC1glY'
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjMwNzI5NjAxMGI5ZTY2MWRiYWZiNmIiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNTIxNTQ2MX0.YkGCMV88qE_IAs_XBBksxvCvvjmytUII3nHmqWGuCpk"
         }),
       );
       final profile = Profile.fromJson(response.data);
@@ -247,7 +247,7 @@ class ProfileCubit extends Cubit<ProfileState> {
         'https://kemet-gp2024.onrender.com/api/v1/auth/profile',
         options: Options(headers: {
           "token":
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjMwNzI5NjAxMGI5ZTY2MWRiYWZiNmIiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNDQ1MTM2NH0.J1AatzRIpUdil5fjHg7w0SLJYQP6x_Fboop37EC1glY"
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjMwNzI5NjAxMGI5ZTY2MWRiYWZiNmIiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNTIxNTQ2MX0.YkGCMV88qE_IAs_XBBksxvCvvjmytUII3nHmqWGuCpk"
         }),
       );
       final profile = Profile.fromJson(response.data);

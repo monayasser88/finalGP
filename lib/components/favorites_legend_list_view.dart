@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jody/components/favorite_container.dart';
 import 'package:jody/cubit/favorites_cubit.dart';
-import 'package:jody/models/favorites.dart';
+import 'package:jody/models/favorites_legand.dart';
+import 'package:jody/pages/legand.dart';
 
 
 class FavoritesLegendListView extends StatelessWidget {
@@ -15,18 +16,24 @@ class FavoritesLegendListView extends StatelessWidget {
     return BlocConsumer<FavoritesCubit, FavoritesState>(
       listener: (context, state) {},
       builder: (context, state) {
+        if (state is FavoritesDeleting) {
+          print('FavoritesDeleting state detected');
+          return const Center(
+            child: Text(
+              'No favorites found.',
+              style: TextStyle(fontFamily: 'poppins', fontSize: 20),
+            ),
+          );
+        }
         return ConditionalBuilder(
           condition: state is! FavoriteLoading && state is FavoriteSuccess ||
               state is FavoritesDeleting,
           builder: (BuildContext context) => ListView.builder(
               itemBuilder: (context, index) => favList(
-                  FavoritesCubit.get(context)
-                      .tourismPlace
-                      .wishListTourismPlace[index],
+                  FavoritesCubit.get(context).favoriteLegand.wishListLegand[index],
                   context),
-              itemCount: FavoritesCubit.get(context)
-                  .tourismPlace
-                  .wishListTourismPlace
+              itemCount: FavoritesCubit.get(context).
+                  favoriteLegand.wishListLegand
                   .length),
           fallback: (BuildContext context) => const Center(
             child: CircularProgressIndicator(),
@@ -36,10 +43,23 @@ class FavoritesLegendListView extends StatelessWidget {
     );
   }
 
-  Widget favList(TourismPlace fav, context) => Padding(
+  Widget favList(Legands fav, context) => Padding(
         padding: const EdgeInsets.symmetric(vertical: 6),
         child: GestureDetector(
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Legend(legend: {
+            'name': fav.name,
+            'informationAbout': fav.informationAbout,
+            'images': fav.images,
+            'imgCover': fav.imgCover,
+            '_id': fav.id,
+          }),
+        ),
+      );
+          },
           child: FavoriteContainer(
             description: fav.informationAbout,
             title: fav.name,

@@ -21,7 +21,7 @@ class LogoutCubit extends Cubit<LogoutState> {
       final response = await dio.patch(EndPoint.logoutEndpoint,
           options: Options(headers: {
             "token":
-                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFjNmI5MzY3OTkzMmU2Nzc3MTg5YWMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNDEwNDU1Nn0.ZWKShnx5B9dN6atvB2q7os-ZbB_7uDB8RuS_2gdO0Vs"
+                  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjMwNzI5NjAxMGI5ZTY2MWRiYWZiNmIiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNTIxNTIwMX0.iQhZC5iyemj65SCMSkH7ZFwk4gCJEvmiGzLiV0ytg00"
           }));
       if (response.statusCode == 200) {
         emit(LoggedOutSuccess());

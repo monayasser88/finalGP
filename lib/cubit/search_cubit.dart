@@ -28,7 +28,6 @@ class SearchCubit extends Cubit<SearchState> {
     }
   }
 
-
   Future<void> governorateSearch(String keyword) async {
     if (keyword.isEmpty) {
       emit(SearchError("Please enter a keyword to search."));
@@ -47,7 +46,6 @@ class SearchCubit extends Cubit<SearchState> {
       emit(SearchError("Error occurred while searching."));
     }
   }
-
 
   Future<void> legendSearch(String keyword) async {
     if (keyword.isEmpty) {
@@ -68,7 +66,7 @@ class SearchCubit extends Cubit<SearchState> {
     }
   }
 
-  void clearSearch() {
+  void clearSearchResults() {
     emit(ClearedSearchState());
   }
 }

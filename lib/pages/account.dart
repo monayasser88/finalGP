@@ -8,7 +8,8 @@ import 'package:jody/pages/change_password.dart';
 import 'package:jody/pages/favorite_kinds.dart';
 import 'package:jody/pages/profile_page.dart';
 import 'package:jody/pages/setting.dart';
-import 'package:jody/pages/tickets.dart';
+import 'package:jody/pages/tourism_search.dart';
+import 'package:jody/views/tourism_search_view.dart';
 
 class Account extends StatelessWidget {
   const Account({super.key});
@@ -62,7 +63,7 @@ class Account extends StatelessWidget {
               onTap: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) {
-                  return const Tickets();
+                  return const TourismSearch();
                 }));
               },
               child: const ContainerAccount(

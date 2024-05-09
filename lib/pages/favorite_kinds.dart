@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:jody/components/custom_appbar2.dart';
 import 'package:jody/components/custom_container_in_setting.dart';
-import 'package:jody/pages/favourites.dart';
+import 'package:jody/views/favorites_legend_view.dart';
 import 'package:jody/views/favorites_tourism_view.dart';
+import 'package:jody/views/favorites_trips_view.dart';
 
 class FavoriteKinds extends StatelessWidget {
   const FavoriteKinds({super.key});
@@ -23,29 +24,16 @@ class FavoriteKinds extends StatelessWidget {
           },
         ),
         const SizedBox(
-          height: 10,
+          height: 40,
         ),
-        // GestureDetector(
-        //     onTap: () {
-        //       Navigator.push(context, MaterialPageRoute(builder: (context) {
-        //         return Favorites();
-        //       }));
-        //     },
-        //     child: CustomContainerSetting(
-        //       icon: Icons.abc,
-        //       tileName: 'Governorates',
-        //     )),
-        // const SizedBox(
-        //   height: 10,
-        // ),
         GestureDetector(
           onTap: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return Favorites();
+              return FavoritesLegendPlaceView();
             }));
           },
           child: const CustomContainerSetting(
-            icon: Icons.abc,
+            icon: Icons.favorite,
             tileName: 'Legends',
           ),
         ),
@@ -55,11 +43,11 @@ class FavoriteKinds extends StatelessWidget {
         GestureDetector(
           onTap: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return Favorites();
+              return const FavoritesTripsView();
             }));
           },
           child: const CustomContainerSetting(
-            icon: Icons.abc,
+            icon: Icons.favorite,
             tileName: 'Trips',
           ),
         ),
@@ -73,24 +61,13 @@ class FavoriteKinds extends StatelessWidget {
             }));
           },
           child: const CustomContainerSetting(
-            icon: Icons.abc,
+            icon: Icons.favorite,
             tileName: 'Tourism Places',
           ),
         ),
         const SizedBox(
           height: 10,
         ),
-        // GestureDetector(
-        //   onTap: () {
-        //     Navigator.push(context, MaterialPageRoute(builder: (context) {
-        //       return Favorites();
-        //     }));
-        //   },
-        //   child: CustomContainerSetting(
-        //     icon: Icons.abc,
-        //     tileName: 'Offers',
-        //   ),
-        // ),
       ]),
     ));
   }

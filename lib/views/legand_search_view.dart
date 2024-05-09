@@ -4,8 +4,8 @@ import 'package:jody/components/custom_appbar.dart';
 import 'package:jody/components/search_field.dart';
 import 'package:jody/cubit/search_cubit.dart';
 import 'package:jody/pages/account.dart';
+import 'package:jody/pages/legand.dart';
 import 'package:jody/pages/not_found.dart';
-
 
 class LegendSearchView extends StatelessWidget {
   LegendSearchView({Key? key}) : super(key: key);
@@ -47,9 +47,19 @@ class LegendSearchView extends StatelessWidget {
                   hint: 'search',
                   controller: _searchController,
                   onPressed: () {
-                    context
-                        .read<SearchCubit>()
-                        .legendSearch(_searchController.text);
+                    if (_searchController.text.isNotEmpty) {
+                      context
+                          .read<SearchCubit>()
+                          .legendSearch(_searchController.text);
+                    }
+                  },
+                  onChanged: (value) {
+                    if (value.isEmpty) {
+                      // Clear search results when search text is empty
+                      context.read<SearchCubit>().clearSearchResults();
+                    } else {
+                      context.read<SearchCubit>().legendSearch(value);
+                    }
                   },
                 ),
                 if (state is SearchLoading)
@@ -69,7 +79,17 @@ class LegendSearchView extends StatelessWidget {
                           title: Text(result['name']),
                           trailing: IconButton(
                             icon: const Icon(Icons.arrow_forward),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Legend(
+                                    legend: state.results[
+                                        index], // Pass the legend details to the Legend screen
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         );
                       },

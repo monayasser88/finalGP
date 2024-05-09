@@ -6,7 +6,6 @@ import 'package:jody/components/custom_input_field.dart';
 import 'package:jody/constraints.dart';
 import 'package:jody/cubit/change_password_cubit.dart';
 
-
 class ChangePasswordView extends StatelessWidget {
   ChangePasswordView({super.key});
 
@@ -25,7 +24,7 @@ class ChangePasswordView extends StatelessWidget {
         } else if (state is ChangePasswordFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(state.errMassage),
+              content: Text('password incorrect'),
               duration: const Duration(seconds: 3),
             ),
           );

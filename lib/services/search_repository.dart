@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:jody/cache/cache_helper.dart';
 import 'package:jody/core/api/end_ponits.dart';
+import 'package:jody/models/favorites_tourism.dart';
 
 class SearchRepository {
   Future<List<Map<String, dynamic>>> tourismSearch(String keyword) async {
@@ -20,9 +21,17 @@ class SearchRepository {
         final String name = document['name'];
         final String image = document['imgCover'];
         final String id = document['_id'];
+        final Map<String, dynamic> governrateData = document['governrate'];
+        final Governate governrate = Governate.fromJson(governrateData);
+        final String informationAbout = document['informationAbout'];
+        List<String> imagesList = List<String>.from(document['images']);
         print(id);
         CacheHelper().saveData(key: ApiKey.tourismId, value: id);
-        results.add({'name': name, 'imgCover': image, '_id': id});
+        results.add({'name': name, 'imgCover': image, '_id': id,
+        'informationAbout': informationAbout,
+        'images': imagesList,
+        'governrate': governrateData,
+        });
       }
       print('Search Results: $results');
       return results;
@@ -76,8 +85,12 @@ class SearchRepository {
         final String name = document['name'];
         final String image = document['imgCover'];
         final String id = document['_id'];
+        final String informationAbout = document['informationAbout'];
+        List<String> imagesList = List<String>.from(document['images']);
         CacheHelper().saveData(key: ApiKey.legendId, value: id);
-        results.add({'name': name, 'imgCover': image, '_id': id});
+        results.add({'name': name, 'imgCover': image, '_id': id,
+        'informationAbout': informationAbout,
+        'images': imagesList,});
       }
       print('Search Results: $results');
       return results;

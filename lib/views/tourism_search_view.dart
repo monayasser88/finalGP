@@ -3,9 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jody/components/custom_appbar.dart';
 import 'package:jody/components/search_field.dart';
 import 'package:jody/cubit/search_cubit.dart';
+import 'package:jody/models/favorites_tourism.dart';
 import 'package:jody/pages/account.dart';
+import 'package:jody/pages/history_of_place.dart';
 import 'package:jody/pages/not_found.dart';
-
 
 class TourismSearchView extends StatelessWidget {
   TourismSearchView({Key? key}) : super(key: key);
@@ -35,7 +36,7 @@ class TourismSearchView extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) =>const Account()),
+                      MaterialPageRoute(builder: (context) => const Account()),
                     );
                   },
                 ),
@@ -47,9 +48,18 @@ class TourismSearchView extends StatelessWidget {
                   hint: 'search',
                   controller: _searchController,
                   onPressed: () {
-                    context
-                        .read<SearchCubit>()
-                        .tourismSearch(_searchController.text);
+                    if (_searchController.text.isNotEmpty) {
+                      context
+                          .read<SearchCubit>()
+                          .tourismSearch(_searchController.text);
+                    }
+                  },
+                  onChanged: (value) {
+                    if (value.isEmpty) {
+                      context.read<SearchCubit>().clearSearchResults();
+                    } else {
+                      context.read<SearchCubit>().tourismSearch(value);
+                    }
                   },
                 ),
                 if (state is SearchLoading)
@@ -69,8 +79,18 @@ class TourismSearchView extends StatelessWidget {
                           ),
                           title: Text(result['name']),
                           trailing: IconButton(
-                            icon:const Icon(Icons.arrow_forward),
-                            onPressed: () {},
+                            icon: const Icon(Icons.arrow_forward),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HistoryOfPlace(
+                                    tourismPlace:
+                                          TourismPlace.fromJson(result), // Pass the selected result as TourismPlace
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         );
                       },

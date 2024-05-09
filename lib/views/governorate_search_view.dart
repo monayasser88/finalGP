@@ -46,9 +46,19 @@ class GovernorateSearchView extends StatelessWidget {
                   hint: 'search',
                   controller: _searchController,
                   onPressed: () {
-                    context
-                        .read<SearchCubit>()
-                        .governorateSearch(_searchController.text);
+                    if (_searchController.text.isNotEmpty) {
+                      context
+                          .read<SearchCubit>()
+                          .governorateSearch(_searchController.text);
+                    }
+                  },
+                  onChanged: (value) {
+                    if (value.isEmpty) {
+                      // Clear search results when search text is empty
+                      context.read<SearchCubit>().clearSearchResults();
+                    } else {
+                      context.read<SearchCubit>().governorateSearch(value);
+                    }
                   },
                 ),
                 if (state is SearchLoading)
@@ -68,7 +78,11 @@ class GovernorateSearchView extends StatelessWidget {
                           title: Text(result['name']),
                           trailing: IconButton(
                             icon: const Icon(Icons.arrow_forward),
-                            onPressed: () {},
+                            onPressed: () {
+                              // Navigator.push(context, MaterialPageRoute(builder: ((context) {
+                              //   return ToristPlace(governateId:result['_id']);
+                              // })));
+                            },
                           ),
                         );
                       },

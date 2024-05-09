@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jody/components/favorite_container.dart';
 import 'package:jody/cubit/favorites_cubit.dart';
-import 'package:jody/models/favorites.dart';
+import 'package:jody/models/favorites_tourism.dart';
+import 'package:jody/pages/history_of_place.dart';
 
+import '../models/torist_place.dart';
 
 class FavoritesTourismListView extends StatelessWidget {
   const FavoritesTourismListView({Key? key}) : super(key: key);
@@ -15,10 +17,17 @@ class FavoritesTourismListView extends StatelessWidget {
     return BlocConsumer<FavoritesCubit, FavoritesState>(
       listener: (context, state) {},
       builder: (context, state) {
+        if (state is FavoritesDeleting) {
+          print('FavoritesDeleting state detected');
+          return const Center(
+            child: Text(
+              'No favorites found.',
+              style: TextStyle(fontFamily: 'poppins', fontSize: 20),
+            ),
+          );
+        }
         return ConditionalBuilder(
-          condition:
-              state is! FavoriteLoading && state is FavoriteSuccess ||
-                  state is FavoritesDeleting,
+          condition: state is! FavoriteLoading && state is FavoriteSuccess,
           builder: (BuildContext context) => ListView.builder(
               itemBuilder: (context, index) => favList(
                   FavoritesCubit.get(context)
@@ -40,7 +49,16 @@ class FavoritesTourismListView extends StatelessWidget {
   Widget favList(TourismPlace fav, context) => Padding(
         padding: const EdgeInsets.symmetric(vertical: 6),
         child: GestureDetector(
-          onTap: () {},
+          onTap: () {
+              Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HistoryOfPlace(
+                  tourismPlace: fav,
+                ),
+              ),
+            );
+          },
           child: FavoriteContainer(
             description: fav.informationAbout,
             title: fav.name,
