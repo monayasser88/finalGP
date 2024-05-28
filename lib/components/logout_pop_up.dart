@@ -76,13 +76,21 @@ class LogOutPopUp extends StatelessWidget {
                       height: 32,
                     ),
                     ElevatedButton(
-                      style: const ButtonStyle(
+                      style:  ButtonStyle(
                         backgroundColor:
                             MaterialStatePropertyAll<Color>(Color(0xffB68B25)),
                         minimumSize: MaterialStatePropertyAll(Size(340, 50)),
                         shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(12)),
                         )),
+                        foregroundColor: MaterialStateProperty.resolveWith<Color>(
+                        (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.disabled)) {
+                            return Colors.grey;
+                          }
+                          return Colors.white;
+                        },
+                      ),
                       ),
                       child: const Text(
                         'Cancel',

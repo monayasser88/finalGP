@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:jody/models/favorites_tourism.dart';
-import 'package:jody/models/torist_place.dart';
 
 class HistoryOfPlace extends StatefulWidget {
   final TourismPlace tourismPlace;

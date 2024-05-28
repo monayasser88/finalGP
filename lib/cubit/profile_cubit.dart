@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:jody/cache/cache_helper.dart';
 import 'package:jody/core/api/end_ponits.dart';
 import 'package:jody/core/errors/exceptions.dart';
-import 'package:jody/models/user_model';
+import 'package:jody/models/user_model.dart';
 import 'package:path/path.dart' as path;
 
 part 'profile_state.dart';
@@ -32,7 +32,7 @@ class ProfileCubit extends Cubit<ProfileState> {
         'https://kemet-gp2024.onrender.com/api/v1/auth/profile',
         options: Options(headers: {
           'token':
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjMwNzI5NjAxMGI5ZTY2MWRiYWZiNmIiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNTIxNTQ2MX0.YkGCMV88qE_IAs_XBBksxvCvvjmytUII3nHmqWGuCpk"
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU0OWE5M2NiZDM0NmYwZTJiNGU4YmMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjkwODQ2NX0.IRooS9LricFdGtXQ8jaPIE8OQBazXUQp3kkFfzN_w4g"
         }),
       );
       final profile = Profile.fromJson(response.data);
@@ -46,6 +46,10 @@ class ProfileCubit extends Cubit<ProfileState> {
     }
   }
 
+  void refreshProfile() {
+    getUserProfile(Dio());
+  }
+
   void updateFirstName(String firstName, Dio dio,
       TextEditingController firstNameController) async {
     try {
@@ -54,7 +58,7 @@ class ProfileCubit extends Cubit<ProfileState> {
         data: {'firstName': firstName},
         options: Options(headers: {
           'token':
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjMwNzI5NjAxMGI5ZTY2MWRiYWZiNmIiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNDQ1MTM2NH0.J1AatzRIpUdil5fjHg7w0SLJYQP6x_Fboop37EC1glY'
+              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU0OWE5M2NiZDM0NmYwZTJiNGU4YmMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjgyMDkwNH0.2GXfn8trcXOzRrKeC7NpsKbPBz2-im4_qbuOKV48gjA'
         }),
       );
       print('Response Status Code: ${updatedFirstNameResponse.statusCode}');
@@ -64,8 +68,10 @@ class ProfileCubit extends Cubit<ProfileState> {
       if (updatedFirstNameResponse.statusCode == 200) {
         getUserProfile(dio);
         final updatedProfile = Profile.fromJson(updatedFirstNameResponse.data);
-        emit(FirstNameUpdated(updatedProfile));
-        firstNameController.text = updatedProfile.firstName ?? '';
+        Future.microtask(() {
+          emit(ProfileLoaded(updatedProfile));
+          firstNameController.text = updatedProfile.firstName ?? '';
+        });
       } else {
         emit(ProfileError('Failed to fetch updated profile.'));
       }
@@ -77,7 +83,7 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   Future uploadImageToApi(XFile image) async {
     try {
-      Dio dio = Dio(); // Initialize Dio
+      Dio dio = Dio();
       MultipartFile file = await MultipartFile.fromFile(
         image.path,
         filename: path.basename(image.path),
@@ -90,7 +96,7 @@ class ProfileCubit extends Cubit<ProfileState> {
         data: formData,
         options: Options(headers: {
           'token':
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjMwNzI5NjAxMGI5ZTY2MWRiYWZiNmIiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNDQ1MTM2NH0.J1AatzRIpUdil5fjHg7w0SLJYQP6x_Fboop37EC1glY'
+              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU0OWE5M2NiZDM0NmYwZTJiNGU4YmMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjkwODQ2NX0.IRooS9LricFdGtXQ8jaPIE8OQBazXUQp3kkFfzN_w4g'
         }),
       );
       if (response.statusCode == 200) {
@@ -115,7 +121,7 @@ class ProfileCubit extends Cubit<ProfileState> {
         data: {'lastName': lastName},
         options: Options(headers: {
           'token':
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjMwNzI5NjAxMGI5ZTY2MWRiYWZiNmIiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNDQ1MTM2NH0.J1AatzRIpUdil5fjHg7w0SLJYQP6x_Fboop37EC1glY'
+              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU0OWE5M2NiZDM0NmYwZTJiNGU4YmMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjgyMDkwNH0.2GXfn8trcXOzRrKeC7NpsKbPBz2-im4_qbuOKV48gjA'
         }),
       );
       print('Response Status Code: ${updatedLastNameResponse.statusCode}');
@@ -146,7 +152,7 @@ class ProfileCubit extends Cubit<ProfileState> {
         data: {'city': city},
         options: Options(headers: {
           'token':
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjMwNzI5NjAxMGI5ZTY2MWRiYWZiNmIiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNDQ1MTM2NH0.J1AatzRIpUdil5fjHg7w0SLJYQP6x_Fboop37EC1glY'
+              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU0OWE5M2NiZDM0NmYwZTJiNGU4YmMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjgyMDkwNH0.2GXfn8trcXOzRrKeC7NpsKbPBz2-im4_qbuOKV48gjA'
         }),
       );
       print('Response Status Code: ${updatedCityResponse.statusCode}');
@@ -220,7 +226,7 @@ class ProfileCubit extends Cubit<ProfileState> {
         'https://kemet-gp2024.onrender.com/api/v1/auth/profile',
         options: Options(headers: {
           "token":
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjMwNzI5NjAxMGI5ZTY2MWRiYWZiNmIiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNDQ1MTM2NH0.J1AatzRIpUdil5fjHg7w0SLJYQP6x_Fboop37EC1glY"
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU0OWE5M2NiZDM0NmYwZTJiNGU4YmMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjgyMDkwNH0.2GXfn8trcXOzRrKeC7NpsKbPBz2-im4_qbuOKV48gjA"
         }),
       );
       //final profileImg = response.data['profileImg'];
@@ -247,7 +253,7 @@ class ProfileCubit extends Cubit<ProfileState> {
         'https://kemet-gp2024.onrender.com/api/v1/auth/profile',
         options: Options(headers: {
           "token":
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjMwNzI5NjAxMGI5ZTY2MWRiYWZiNmIiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNTIxNTQ2MX0.YkGCMV88qE_IAs_XBBksxvCvvjmytUII3nHmqWGuCpk"
+              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU0OWE5M2NiZDM0NmYwZTJiNGU4YmMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjkwODQ2NX0.IRooS9LricFdGtXQ8jaPIE8OQBazXUQp3kkFfzN_w4g"
         }),
       );
       final profile = Profile.fromJson(response.data);

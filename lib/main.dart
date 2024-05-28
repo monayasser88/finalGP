@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jody/bloc_observer.dart';
 import 'package:jody/cache/cache_helper.dart';
 import 'package:jody/pages/account.dart';
+import 'package:jody/pages/profile_page.dart';
+import 'package:jody/pages/setting.dart';
 import 'package:jody/providers/theme_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -26,7 +28,13 @@ class MyApp extends StatelessWidget {
             create: (_) => ThemeProvider(),
             child:
                 Consumer<ThemeProvider>(builder: (context, themeProvider, _) {
-              return MaterialApp(
+              return MaterialApp(initialRoute: '/',
+      routes: {
+        //'/': (context) => HomeScreen(),
+        '/account': (context) => Account(),
+        '/settings': (context) => Setting(),
+        '/profile': (context) => ProfilePage(),
+      },
                 debugShowCheckedModeBanner: false,
                 //theme: ThemeData.light(),
                 //darkTheme: ThemeData.dark(),

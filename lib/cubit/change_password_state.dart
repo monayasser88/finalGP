@@ -11,4 +11,9 @@ final class ChangePasswordFailure extends ChangePasswordState {
   
   ChangePasswordFailure(this.errMassage);
 }
+final class ChangePasswordFailure2 extends ChangePasswordState {
+  final String errMassage;
+  
+  ChangePasswordFailure2(this.errMassage);
+}
 

@@ -45,6 +45,11 @@ class _WebViewScreenState extends State<WebViewScreen> {
             style: TextStyle(fontFamily: 'poppins'),
           ),
         ),
-        body: WebViewWidget(controller: _controller));
+        body: Column(
+          children: [
+            const Text('Once you complete payment method your Tickets will arrived within 2 days'),
+            WebViewWidget(controller: _controller),
+          ],
+        ));
   }
 }

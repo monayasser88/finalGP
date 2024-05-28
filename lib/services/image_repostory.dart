@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jody/core/errors/exceptions.dart';
 import 'package:jody/core/functions/upload_images_to_api.dart';
-import 'package:jody/models/user_model';
+import 'package:jody/models/user_model.dart';
 
 class ImageRepository {
   Future<Either<String, Profile>> uploadImageToApi({XFile? profilePic}) async {

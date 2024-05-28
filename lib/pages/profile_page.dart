@@ -4,14 +4,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jody/components/custom_appbar.dart';
 import 'package:jody/components/custom_edit_photo.dart';
 import 'package:jody/cubit/profile_cubit.dart';
-import 'package:jody/pages/account.dart';
 import 'package:jody/views/profile_view.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
   Dio dio = Dio();
+
   @override
   Widget build(BuildContext context) {
+    final String previousScreen =
+        ModalRoute.of(context)!.settings.arguments as String;
     return BlocProvider(
         create: (context) => ProfileCubit()..getUserProfile(dio),
         child: Scaffold(
@@ -25,10 +27,11 @@ class ProfilePage extends StatelessWidget {
                     CustomAppBar(
                       title: 'Profile',
                       onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return const Account();
-                        }));
+                        if (previousScreen == 'account') {
+                          Navigator.pushReplacementNamed(context, '/account');
+                        } else if (previousScreen == 'settings') {
+                          Navigator.pushReplacementNamed(context, '/settings');
+                        }
                       },
                     ),
                     const SizedBox(height: 20),

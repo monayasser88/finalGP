@@ -4,8 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jody/cubit/profile_cubit.dart';
 
 class PhotoAccount extends StatelessWidget {
-  PhotoAccount({super.key});
-  //late ProfileCubit profileCubit;
+  const PhotoAccount({super.key});
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

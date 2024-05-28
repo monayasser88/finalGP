@@ -4,6 +4,10 @@ class Trips {
   String informationAbout;
   String imgCover;
   final List<String> images;
+  final double ratingAverage;
+  final int quantity;
+  final double price;
+  final bool isOffered;
 
   Trips({
     required this.id,
@@ -11,6 +15,10 @@ class Trips {
     required this.informationAbout,
     required this.imgCover,
     required this.images,
+    required this.ratingAverage,
+    required this.quantity,
+    required this.price,
+    required this.isOffered,
   });
 
   factory Trips.fromJson(Map<String, dynamic> json) {
@@ -20,6 +28,11 @@ class Trips {
       informationAbout: json['description'],
       imgCover: json['imgCover'],
       images: List<String>.from(json['images']),
+      ratingAverage:
+          json['ratingAverage'] != null ? json['ratingAverage'].toDouble() : 0,
+      quantity: json['quantity'],
+      price: json['price'].toDouble(),
+      isOffered: json['isOffered'],
     );
   }
 }

@@ -33,10 +33,7 @@ class LegendSearchView extends StatelessWidget {
                 CustomAppBar(
                   title: 'Search',
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Account()),
-                    );
+                    Navigator.of(context).pop();
                   },
                 ),
                 const SizedBox(

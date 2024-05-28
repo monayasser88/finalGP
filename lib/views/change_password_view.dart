@@ -10,7 +10,6 @@ class ChangePasswordView extends StatelessWidget {
   ChangePasswordView({super.key});
 
   final _formKey = GlobalKey<FormState>();
-  //late Dio dio;
   Widget build(BuildContext context) {
     return BlocConsumer<ChangePasswordCubit, ChangePasswordState>(
       listener: (context, state) {
@@ -21,11 +20,12 @@ class ChangePasswordView extends StatelessWidget {
               duration: Duration(seconds: 3),
             ),
           );
+          Navigator.of(context).pop();
         } else if (state is ChangePasswordFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('password incorrect'),
-              duration: const Duration(seconds: 3),
+            const SnackBar(
+              content: Text('Incorrect current password'),
+              duration: Duration(seconds: 3),
             ),
           );
         }
@@ -89,7 +89,7 @@ class ChangePasswordView extends StatelessWidget {
                   state is ChangePasswordLoading
                       ? const CircularProgressIndicator()
                       : ElevatedButton(
-                          style: const ButtonStyle(
+                          style: ButtonStyle(
                             minimumSize:
                                 MaterialStatePropertyAll(Size(354, 44)),
                             shape:
@@ -99,12 +99,38 @@ class ChangePasswordView extends StatelessWidget {
                             )),
                             backgroundColor:
                                 MaterialStatePropertyAll<Color>(kPrimaryColor),
+                            foregroundColor:
+                                MaterialStateProperty.resolveWith<Color>(
+                              (Set<MaterialState> states) {
+                                if (states.contains(MaterialState.disabled)) {
+                                  return Colors.grey;
+                                }
+                                return Colors.white;
+                              },
+                            ),
                           ),
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               _formKey.currentState!.save();
-                              ChangePasswordCubit.get(context)
-                                  .changeUserPassword(Dio());
+                              if (ChangePasswordCubit.get(context)
+                                      .newPasswordController
+                                      .text !=
+                                  ChangePasswordCubit.get(context)
+                                      .confirmNewPasswordController
+                                      .text) {
+                                // Show error message for mismatched passwords
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'New password and Confirm New Password do not match!',
+                                    ),
+                                    duration: Duration(seconds: 3),
+                                  ),
+                                );
+                              } else {
+                                ChangePasswordCubit.get(context)
+                                    .changeUserPassword(Dio());
+                              }
                             } else {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(

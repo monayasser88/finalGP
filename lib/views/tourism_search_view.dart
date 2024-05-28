@@ -4,7 +4,6 @@ import 'package:jody/components/custom_appbar.dart';
 import 'package:jody/components/search_field.dart';
 import 'package:jody/cubit/search_cubit.dart';
 import 'package:jody/models/favorites_tourism.dart';
-import 'package:jody/pages/account.dart';
 import 'package:jody/pages/history_of_place.dart';
 import 'package:jody/pages/not_found.dart';
 
@@ -34,10 +33,7 @@ class TourismSearchView extends StatelessWidget {
                 CustomAppBar(
                   title: 'Search',
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const Account()),
-                    );
+                    Navigator.of(context).pop();
                   },
                 ),
                 const SizedBox(
@@ -86,7 +82,7 @@ class TourismSearchView extends StatelessWidget {
                                 MaterialPageRoute(
                                   builder: (context) => HistoryOfPlace(
                                     tourismPlace:
-                                          TourismPlace.fromJson(result), // Pass the selected result as TourismPlace
+                                          TourismPlace.fromJson(result),
                                   ),
                                 ),
                               );

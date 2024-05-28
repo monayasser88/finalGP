@@ -4,6 +4,7 @@ import 'package:jody/components/custom_appbar.dart';
 import 'package:jody/components/search_field.dart';
 import 'package:jody/cubit/search_cubit.dart';
 import 'package:jody/pages/account.dart';
+import 'package:jody/pages/governorate.dart';
 import 'package:jody/pages/not_found.dart';
 
 class GovernorateSearchView extends StatelessWidget {
@@ -32,10 +33,7 @@ class GovernorateSearchView extends StatelessWidget {
                 CustomAppBar(
                   title: 'Search',
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Account()),
-                    );
+                    Navigator.of(context).pop();
                   },
                 ),
                 const SizedBox(
@@ -79,9 +77,9 @@ class GovernorateSearchView extends StatelessWidget {
                           trailing: IconButton(
                             icon: const Icon(Icons.arrow_forward),
                             onPressed: () {
-                              // Navigator.push(context, MaterialPageRoute(builder: ((context) {
-                              //   return ToristPlace(governateId:result['_id']);
-                              // })));
+                              Navigator.push(context, MaterialPageRoute(builder: ((context) {
+                                return ToristPlace(governateId:result['_id']);
+                              })));
                             },
                           ),
                         );

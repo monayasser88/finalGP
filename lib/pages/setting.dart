@@ -5,10 +5,9 @@ import 'package:jody/components/custom_container_in_setting.dart';
 import 'package:jody/components/custom_divider.dart';
 import 'package:jody/components/dark_mode_container.dart';
 import 'package:jody/components/setting_container.dart';
+import 'package:jody/pages/account.dart';
 import 'package:jody/pages/change_password.dart';
 import 'package:jody/pages/privacy.dart';
-import 'package:jody/pages/profile_page.dart';
-
 
 class Setting extends StatefulWidget {
   const Setting({super.key});
@@ -31,7 +30,10 @@ class _SettingState extends State<Setting> {
             CustomAppBar(
               title: 'Setting',
               onTap: () {
-                Navigator.of(context).pop();
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) {
+                  return const Account();
+                }));
               },
             ),
             const SizedBox(
@@ -49,12 +51,13 @@ class _SettingState extends State<Setting> {
             ),
             GestureDetector(
                 onTap: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) {
-                    return  ProfilePage();
-                  }));
+                  Navigator.pushNamed(
+                    context,
+                    '/profile',
+                    arguments: 'settings',
+                  );
                 },
-                child:const CustomContainerSetting(
+                child: const CustomContainerSetting(
                   tileName: 'Profile',
                   icon: Icons.person_outline_rounded,
                 )),
@@ -68,7 +71,7 @@ class _SettingState extends State<Setting> {
                   return const ChangePassword();
                 }));
               },
-              child:const CustomContainerSetting(
+              child: const CustomContainerSetting(
                 tileName: 'Change Password',
                 icon: CupertinoIcons.lock_rotation_open,
               ),
@@ -87,8 +90,8 @@ class _SettingState extends State<Setting> {
                   return const Privacy();
                 }));
               },
-              child:const CustomContainerSetting(
-                tileName: 'Policy',
+              child: const CustomContainerSetting(
+                tileName: 'About Kemet',
                 icon: Icons.privacy_tip_outlined,
               ),
             ),

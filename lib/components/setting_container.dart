@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jody/constraints.dart';
 import 'package:jody/cubit/profile_cubit.dart';
-import 'package:jody/pages/profile_page.dart';
 
 class SettingContainer extends StatelessWidget {
   const SettingContainer({super.key});
@@ -69,10 +68,11 @@ class SettingContainer extends StatelessWidget {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context)
-                            .push(MaterialPageRoute(builder: (context) {
-                          return ProfilePage();
-                        }));
+                        Navigator.pushNamed(
+                          context,
+                          '/profile',
+                          arguments: 'settings',
+                        );
                       },
                       child: SizedBox(
                           width: 24,

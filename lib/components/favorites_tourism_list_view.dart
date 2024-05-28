@@ -7,8 +7,6 @@ import 'package:jody/cubit/favorites_cubit.dart';
 import 'package:jody/models/favorites_tourism.dart';
 import 'package:jody/pages/history_of_place.dart';
 
-import '../models/torist_place.dart';
-
 class FavoritesTourismListView extends StatelessWidget {
   const FavoritesTourismListView({Key? key}) : super(key: key);
 

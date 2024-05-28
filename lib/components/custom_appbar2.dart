@@ -10,18 +10,18 @@ class CustomAppBar2 extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: onTap,
-          child:const Icon(
+          child: const Icon(
             Icons.arrow_back_ios_new_rounded,
             size: 20,
             //color: Colors.black,
           ),
         ),
         const SizedBox(
-          width: 75,
+          width: 85,
         ),
         Text(
           title,
-          style:const TextStyle(
+          style: const TextStyle(
             fontSize: 20,
             fontFamily: 'poppins',
             fontWeight: FontWeight.w900,

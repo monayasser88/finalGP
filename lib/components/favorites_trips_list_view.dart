@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jody/components/favorite_container.dart';
 import 'package:jody/cubit/favorites_cubit.dart';
 import 'package:jody/models/favorites_trip.dart';
+import 'package:jody/pages/trip.dart';
 
 class FavoritesTripsListView extends StatelessWidget {
   const FavoritesTripsListView({Key? key}) : super(key: key);
@@ -43,18 +44,12 @@ class FavoritesTripsListView extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 6),
         child: GestureDetector(
           onTap: () {
-            //         Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => Legend(legend: {
-            //       'title': fav.name,
-            //       'description': fav.informationAbout,
-            //       'images': fav.images,
-            //       'imgCover': fav.imgCover,
-            //       '_id': fav.id,
-            //     }),
-            //   ),
-            // );
+            Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MyTripOfPlace(trip: fav),
+        ),
+      );
           },
           child: FavoriteContainer(
             description: fav.informationAbout,

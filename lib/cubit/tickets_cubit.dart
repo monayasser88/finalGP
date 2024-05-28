@@ -18,13 +18,15 @@ class TicketsCubit extends Cubit<TicketsState> {
   TextEditingController streetField = TextEditingController();
   TextEditingController cityField = TextEditingController();
   TextEditingController phoneField = TextEditingController();
+  
+  
   void getReservedTickets(Dio dio) async {
     emit(TicketsLoading());
     try {
       final response = await dio.get(EndPoint.ticketsList,
           options: Options(headers: {
             'token':
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFjNmI5MzY3OTkzMmU2Nzc3MTg5YWMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNDMzNjU1MH0.3SbUu0IDZrnILcmDhcZ-LBxO_FyZLm3d6ArLfyOrtxE'
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU0OWE5M2NiZDM0NmYwZTJiNGU4YmMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjgyMDkwNH0.2GXfn8trcXOzRrKeC7NpsKbPBz2-im4_qbuOKV48gjA'
           }));
       print(response.statusCode);
       if (response.statusCode == 200 && response.data['msg'] == 'success') {
@@ -117,7 +119,7 @@ class TicketsCubit extends Cubit<TicketsState> {
           },
           options: Options(headers: {
             'token':
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFjNmI5MzY3OTkzMmU2Nzc3MTg5YWMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNDMzNjU1MH0.3SbUu0IDZrnILcmDhcZ-LBxO_FyZLm3d6ArLfyOrtxE'
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU0OWE5M2NiZDM0NmYwZTJiNGU4YmMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjgyMDkwNH0.2GXfn8trcXOzRrKeC7NpsKbPBz2-im4_qbuOKV48gjA'
           }));
       //final decodedToken = JwtDecoder.decode(token);
       //CacheHelper().saveData(key: ApiKey.id, value: decodedToken[ApiKey.id]);
@@ -154,7 +156,7 @@ class TicketsCubit extends Cubit<TicketsState> {
           },
           options: Options(headers: {
             'token':
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFjNmI5MzY3OTkzMmU2Nzc3MTg5YWMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNDMzNjU1MH0.3SbUu0IDZrnILcmDhcZ-LBxO_FyZLm3d6ArLfyOrtxE'
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU0OWE5M2NiZDM0NmYwZTJiNGU4YmMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjgyMDkwNH0.2GXfn8trcXOzRrKeC7NpsKbPBz2-im4_qbuOKV48gjA'
           }));
       //final decodedToken = JwtDecoder.decode(token);
       //CacheHelper().saveData(key: ApiKey.id, value: decodedToken[ApiKey.id]);

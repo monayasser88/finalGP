@@ -8,7 +8,7 @@ import 'package:jody/components/logout_pop_up.dart';
 import 'package:jody/components/update_pop_up.dart';
 import 'package:jody/constraints.dart';
 import 'package:jody/cubit/profile_cubit.dart';
-import 'package:jody/models/user_model';
+import 'package:jody/models/user_model.dart';
 import 'package:jody/pages/change_password.dart';
 
 class ProfileView extends StatelessWidget {
@@ -46,23 +46,22 @@ class ProfileView extends StatelessWidget {
           cityController.text = state.profile.city ?? '';
           emailController.text = state.profile.email ?? '';
           return ProfileUser(state.profile, context);
-        } else if (state is FirstNameUpdated) {
-          firstNameController.text = state.profile.firstName ?? '';
         } else {
           return const Center(
             child: Text('Error loading profile'),
           );
         }
-        return CircularProgressIndicator();
+        //return CircularProgressIndicator();
       },
     );
   }
 
-  Widget ProfileUser(Profile profile, BuildContext context) => SingleChildScrollView(
-    child: SizedBox(
-      height: 400,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+  Widget ProfileUser(Profile profile, BuildContext context) =>
+      SingleChildScrollView(
+        child: SizedBox(
+          height: 400,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               CustomTitle(
                 titleProfile: 'First name',
@@ -146,6 +145,6 @@ class ProfileView extends StatelessWidget {
               ),
             ],
           ),
-    ),
-  );
+        ),
+      );
 }

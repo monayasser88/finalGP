@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jody/constraints.dart';
 
-
 class CustomInputField extends StatefulWidget {
   final String labelText;
   final String hintText;
@@ -65,9 +64,18 @@ class _CustomInputFieldState extends State<CustomInputField> {
             : null,
       ),
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      validator: (textValue) {
-        if (textValue == null || textValue.isEmpty) {
-          return 'required!';
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter a password';
+        }
+        if (value.length < 8) {
+          return 'Password must be at least 8 characters long';
+        }
+        if (!RegExp(r'[0-9]').hasMatch(value)) {
+          return 'Password must contain at least one number';
+        }
+        if (!RegExp(r'[!@#$%^&*]').hasMatch(value)) {
+          return 'Password must contain at least one special character';
         }
         return null;
       },

@@ -6,10 +6,8 @@ import 'package:jody/components/logout_pop_up.dart';
 import 'package:jody/components/photo_account.dart';
 import 'package:jody/pages/change_password.dart';
 import 'package:jody/pages/favorite_kinds.dart';
-import 'package:jody/pages/profile_page.dart';
+import 'package:jody/pages/governorate_search.dart';
 import 'package:jody/pages/setting.dart';
-import 'package:jody/pages/tourism_search.dart';
-import 'package:jody/views/tourism_search_view.dart';
 
 class Account extends StatelessWidget {
   const Account({super.key});
@@ -28,16 +26,17 @@ class Account extends StatelessWidget {
             const SizedBox(
               height: 29,
             ),
-            PhotoAccount(),
+            const PhotoAccount(),
             const SizedBox(
               height: 27,
             ),
             GestureDetector(
               onTap: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) {
-                  return ProfilePage();
-                }));
+                Navigator.pushNamed(
+                  context,
+                  '/profile',
+                  arguments: 'account',
+                );
               },
               child: const ContainerAccount(
                   contName: 'Profile', contIcon: Icons.person_outline_rounded),
@@ -63,7 +62,7 @@ class Account extends StatelessWidget {
               onTap: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) {
-                  return const TourismSearch();
+                  return const GovernorateSearch();
                 }));
               },
               child: const ContainerAccount(

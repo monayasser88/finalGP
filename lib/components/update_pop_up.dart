@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jody/constraints.dart';
 
-
 void showUpdateDialog(
   BuildContext context,
   String field,
@@ -55,13 +54,21 @@ void showUpdateDialog(
                     height: 30,
                   ),
                   ElevatedButton(
-                    style: const ButtonStyle(
+                    style: ButtonStyle(
                       backgroundColor:
                           MaterialStatePropertyAll<Color>(Color(0xffB68B25)),
                       minimumSize: MaterialStatePropertyAll(Size(340, 50)),
                       shape: MaterialStatePropertyAll(RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(12)),
                       )),
+                      foregroundColor: MaterialStateProperty.resolveWith<Color>(
+                        (Set<MaterialState> states) {
+                          if (states.contains(MaterialState.disabled)) {
+                            return Colors.grey;
+                          }
+                          return Colors.white;
+                        },
+                      ),
                     ),
                     child: const Text(
                       'Cancel',
