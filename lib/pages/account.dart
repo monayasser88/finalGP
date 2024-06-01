@@ -6,8 +6,8 @@ import 'package:jody/components/logout_pop_up.dart';
 import 'package:jody/components/photo_account.dart';
 import 'package:jody/pages/change_password.dart';
 import 'package:jody/pages/favorite_kinds.dart';
-import 'package:jody/pages/governorate_search.dart';
 import 'package:jody/pages/setting.dart';
+import 'package:jody/pages/tickets.dart';
 
 class Account extends StatelessWidget {
   const Account({super.key});
@@ -62,7 +62,7 @@ class Account extends StatelessWidget {
               onTap: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) {
-                  return const GovernorateSearch();
+                  return const Tickets();
                 }));
               },
               child: const ContainerAccount(

@@ -53,3 +53,23 @@ class WishlistResponseTrip {
     );
   }
 }
+
+class Review {
+  final String id;
+  final String text;
+  final int rate;
+ 
+  Review({
+required this.id,
+    required this.text,
+    required this.rate,
+  });
+ 
+  factory Review.fromJson(Map<String, dynamic> json) {
+    return Review(
+      id: json['_id'],
+      text: json['text'],
+      rate: json['rate'],
+    );
+  }
+}

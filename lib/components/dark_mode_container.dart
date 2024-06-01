@@ -54,16 +54,6 @@ class _DarkModeState extends State<DarkMode> {
               activeTrackColor: Colors.white,
               inactiveTrackColor: Colors.black,
             ),
-            // IconButton(
-            //     icon: Icon(GProject.themeNotifier.value == ThemeMode.light
-            //         ? Icons.dark_mode
-            //         : CupertinoIcons.money_dollar),
-            //     onPressed: () {
-            //       GProject.themeNotifier.value =
-            //           GProject.themeNotifier.value == ThemeMode.light
-            //               ? ThemeMode.dark
-            //               : ThemeMode.light;
-            //     })
           ],
         ),
       ),

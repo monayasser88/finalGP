@@ -18,7 +18,7 @@ required this.review,
     final Profile user = Profile.fromJson(review);
     final String initialText = review['text'];
     final dynamic ratingValue =
-        review['rate']; // Ensure this matches your API response
+        review['rate'];
     final int initialRating =
         (ratingValue != null && ratingValue is int) ? ratingValue : 3;
 
@@ -30,9 +30,9 @@ required this.review,
           Row(
             children: [
               CircleAvatar(
-                   radius: 20,
+                  radius: 20,
                   backgroundImage: NetworkImage(
-                   user.profilePic.toString(),
+                  user.profilePic.toString(),
                   ),
                   ),
               SizedBox(width: 10),

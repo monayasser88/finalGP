@@ -6,7 +6,6 @@ import 'package:jody/core/api/end_ponits.dart';
 import 'package:jody/core/errors/exceptions.dart';
 import 'package:jody/models/tickets.dart';
 import 'package:jody/pages/web_view_stripe.dart';
-import 'package:path/path.dart';
 
 part 'tickets_state.dart';
 
@@ -18,18 +17,19 @@ class TicketsCubit extends Cubit<TicketsState> {
   TextEditingController streetField = TextEditingController();
   TextEditingController cityField = TextEditingController();
   TextEditingController phoneField = TextEditingController();
-  
-  
+
   void getReservedTickets(Dio dio) async {
     emit(TicketsLoading());
     try {
       final response = await dio.get(EndPoint.ticketsList,
           options: Options(headers: {
             'token':
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU0OWE5M2NiZDM0NmYwZTJiNGU4YmMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjgyMDkwNH0.2GXfn8trcXOzRrKeC7NpsKbPBz2-im4_qbuOKV48gjA'
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU0OWE5M2NiZDM0NmYwZTJiNGU4YmMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjkwODQ2NX0.IRooS9LricFdGtXQ8jaPIE8OQBazXUQp3kkFfzN_w4g'
           }));
       print(response.statusCode);
-      if (response.statusCode == 200 && response.data['msg'] == 'success') {
+      if (response.statusCode == 200 &&
+          response.data['msg'] == 'success' &&
+          response.data['myTicket']['totalPrice'] != 0) {
         final Map<String, dynamic> jsonMap =
             response.data['myTicket'] as Map<String, dynamic>;
         if (jsonMap != null) {
@@ -59,12 +59,16 @@ class TicketsCubit extends Cubit<TicketsState> {
       var response = await dio.delete(EndPoint.deleteTicket(TripId),
           options: Options(headers: {
             'token':
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFjNmI5MzY3OTkzMmU2Nzc3MTg5YWMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxMzkzMjM5MX0.9k5gc5VoxtY772RQIhELvJFzpoj7Ai9Q3YZI-vdrtFc'
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU0OWE5M2NiZDM0NmYwZTJiNGU4YmMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjkwODQ2NX0.IRooS9LricFdGtXQ8jaPIE8OQBazXUQp3kkFfzN_w4g'
           }));
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 &&
+          response.data['myTicket']['totalPrice'] != 0) {
         //Future.delayed(const Duration(seconds: 2));
         emit(TicketDeleteSuccess());
         getReservedTickets(dio);
+      } else if (response.statusCode == 200 &&
+          response.data['myTicket']['totalPrice'] == 0) {
+        emit(NoTicketsFound());
       } else {
         emit(TicketsError('Failed to delete favorite tourism place.'));
       }
@@ -85,7 +89,7 @@ class TicketsCubit extends Cubit<TicketsState> {
           data: {'quantity': quantity},
           options: Options(headers: {
             'token':
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjFjNmI5MzY3OTkzMmU2Nzc3MTg5YWMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxMzkzMjM5MX0.9k5gc5VoxtY772RQIhELvJFzpoj7Ai9Q3YZI-vdrtFc'
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU0OWE5M2NiZDM0NmYwZTJiNGU4YmMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjkwODQ2NX0.IRooS9LricFdGtXQ8jaPIE8OQBazXUQp3kkFfzN_w4g'
           }));
       print('Response Status Code: ${response.statusCode}');
       if (response.statusCode == 200) {
@@ -119,7 +123,7 @@ class TicketsCubit extends Cubit<TicketsState> {
           },
           options: Options(headers: {
             'token':
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU0OWE5M2NiZDM0NmYwZTJiNGU4YmMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjgyMDkwNH0.2GXfn8trcXOzRrKeC7NpsKbPBz2-im4_qbuOKV48gjA'
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU0OWE5M2NiZDM0NmYwZTJiNGU4YmMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjkwODQ2NX0.IRooS9LricFdGtXQ8jaPIE8OQBazXUQp3kkFfzN_w4g'
           }));
       //final decodedToken = JwtDecoder.decode(token);
       //CacheHelper().saveData(key: ApiKey.id, value: decodedToken[ApiKey.id]);
@@ -133,7 +137,7 @@ class TicketsCubit extends Cubit<TicketsState> {
       } else {
         emit(ShippingError('An error occurred while creating cash order.'));
       }
-      throw 'An error occurred while creating cash order.';
+      // throw 'An error occurred while creating cash order.';
     }
   }
 
@@ -156,13 +160,11 @@ class TicketsCubit extends Cubit<TicketsState> {
           },
           options: Options(headers: {
             'token':
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU0OWE5M2NiZDM0NmYwZTJiNGU4YmMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjgyMDkwNH0.2GXfn8trcXOzRrKeC7NpsKbPBz2-im4_qbuOKV48gjA'
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU0OWE5M2NiZDM0NmYwZTJiNGU4YmMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjkwODQ2NX0.IRooS9LricFdGtXQ8jaPIE8OQBazXUQp3kkFfzN_w4g'
           }));
       //final decodedToken = JwtDecoder.decode(token);
       //CacheHelper().saveData(key: ApiKey.id, value: decodedToken[ApiKey.id]);
       print(response.data);
-      //print(response.data['session']['url']);
-      //final stripeUrl = response.data['session']['url'];
       CacheHelper().saveData(
           key: ApiKey.stripeUrl, value: response.data['session']['url']);
       final stripeUrl = CacheHelper().getDataString(key: ApiKey.stripeUrl);
@@ -175,6 +177,7 @@ class TicketsCubit extends Cubit<TicketsState> {
       );
       emit(PayingLoading());
       //getReservedTickets(dio);
+      emit(PayingSuccess());
       return response.data['msg'];
     } catch (e) {
       if (e is ServerException) {
@@ -182,7 +185,7 @@ class TicketsCubit extends Cubit<TicketsState> {
       } else {
         emit(ShippingError('An error occurred while creating online order.'));
       }
-      throw 'An error occurred while creating online order.';
+      //throw 'An error occurred while creating online order.';
     }
   }
 }

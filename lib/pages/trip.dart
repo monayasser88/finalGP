@@ -63,7 +63,6 @@ class _MyTripOfPlaceState extends State<MyTripOfPlace> {
       // If already reviewed, do nothing
       return;
     }
-
     String reviewText = _reviewController.text.trim();
     if (reviewText.isNotEmpty && _userRating > 0) {
       try {
@@ -73,7 +72,7 @@ class _MyTripOfPlaceState extends State<MyTripOfPlace> {
           data: {'text': reviewText, 'rate': _userRating},
           options: Options(headers: {
             'token':
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjMzMDUxM2ViYTYyM2M3MmNhMjFlMjAiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNDY4MTk3OH0.2JrVkXVXxzHmFlndsvzAynVKa89b7tOrvR6xOVaC4j0',
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU0OWE5M2NiZDM0NmYwZTJiNGU4YmMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjkwODQ2NX0.IRooS9LricFdGtXQ8jaPIE8OQBazXUQp3kkFfzN_w4g',
           }),
         );
         if (response.statusCode == 200) {
@@ -104,7 +103,7 @@ class _MyTripOfPlaceState extends State<MyTripOfPlace> {
         data: {'document': tripId},
         options: Options(headers: {
           'token':
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjMzMDUxM2ViYTYyM2M3MmNhMjFlMjAiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNDY4MTk3OH0.2JrVkXVXxzHmFlndsvzAynVKa89b7tOrvR6xOVaC4j0',
+              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU0OWE5M2NiZDM0NmYwZTJiNGU4YmMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjkwODQ2NX0.IRooS9LricFdGtXQ8jaPIE8OQBazXUQp3kkFfzN_w4g',
         }),
       );
       if (response.statusCode == 200) {
@@ -129,7 +128,7 @@ class _MyTripOfPlaceState extends State<MyTripOfPlace> {
         options: Options(
           headers: {
             'token':
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjMzMDUxM2ViYTYyM2M3MmNhMjFlMjAiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNDY4MTk3OH0.2JrVkXVXxzHmFlndsvzAynVKa89b7tOrvR6xOVaC4j0',
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU0OWE5M2NiZDM0NmYwZTJiNGU4YmMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjkwODQ2NX0.IRooS9LricFdGtXQ8jaPIE8OQBazXUQp3kkFfzN_w4g',
           },
         ),
       );
@@ -154,7 +153,7 @@ class _MyTripOfPlaceState extends State<MyTripOfPlace> {
         'https://kemet-gp2024.onrender.com/api/v1/reviews/$reviewId',
         options: Options(headers: {
           'token':
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjMzMDUxM2ViYTYyM2M3MmNhMjFlMjAiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNDY4MTk3OH0.2JrVkXVXxzHmFlndsvzAynVKa89b7tOrvR6xOVaC4j0',
+              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU0OWE5M2NiZDM0NmYwZTJiNGU4YmMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjkwODQ2NX0.IRooS9LricFdGtXQ8jaPIE8OQBazXUQp3kkFfzN_w4g',
         }),
       );
 
@@ -185,12 +184,19 @@ class _MyTripOfPlaceState extends State<MyTripOfPlace> {
         },
         options: Options(headers: {
           'token':
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjMzMDUxM2ViYTYyM2M3MmNhMjFlMjAiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNDY4MTk3OH0.2JrVkXVXxzHmFlndsvzAynVKa89b7tOrvR6xOVaC4j0',
+              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU0OWE5M2NiZDM0NmYwZTJiNGU4YmMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjkwODQ2NX0.IRooS9LricFdGtXQ8jaPIE8OQBazXUQp3kkFfzN_w4g',
         }),
       );
 
       if (response.statusCode == 200) {
         print('Review updated successfully');
+        int reviewIndex =
+            reviews.indexWhere((review) => review['_id'] == reviewId);
+        reviews[reviewIndex]['text'] = text;
+        reviews[reviewIndex]['rate'] = rating;
+        setState(() {
+          _fetchReviews(widget.trip.id);
+        });
       } else {
         throw Exception('Failed to update review');
       }
@@ -211,7 +217,7 @@ class _MyTripOfPlaceState extends State<MyTripOfPlace> {
         data: {'trip': tripId},
         options: Options(headers: {
           'token':
-              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjMzMDUxM2ViYTYyM2M3MmNhMjFlMjAiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNDY4MTk3OH0.2JrVkXVXxzHmFlndsvzAynVKa89b7tOrvR6xOVaC4j0',
+              'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU0OWE5M2NiZDM0NmYwZTJiNGU4YmMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjkwODQ2NX0.IRooS9LricFdGtXQ8jaPIE8OQBazXUQp3kkFfzN_w4g',
         }),
       );
 
@@ -252,7 +258,7 @@ class _MyTripOfPlaceState extends State<MyTripOfPlace> {
                 if (_isPressed) {
                   // Call the addToWishlist function to add the trip to the wishlist
                   addToWishlist(widget.trip.id,
-                      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjMzMDUxM2ViYTYyM2M3MmNhMjFlMjAiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNDY4MTk3OH0.2JrVkXVXxzHmFlndsvzAynVKa89b7tOrvR6xOVaC4j0');
+                      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjU0OWE5M2NiZDM0NmYwZTJiNGU4YmMiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNjkwODQ2NX0.IRooS9LricFdGtXQ8jaPIE8OQBazXUQp3kkFfzN_w4g');
                 } else {
                   // Call the _removeFromWishlist function to remove the trip from the wishlist
                   _removeFromWishlist(widget.trip.id);
@@ -658,20 +664,18 @@ class _MyTripOfPlaceState extends State<MyTripOfPlace> {
                                         textEditingController.text;
                                     if (updatedReviewText.isNotEmpty) {
                                       String reviewId = reviews[index][
-                                          '_id']; // Assuming `index` is accessible in this context
+                                          '_id']; // Assuming `index` is accessible
                                       try {
                                         await updateReview(
                                             reviewId,
                                             updatedReviewText,
                                             updatedRating,
-                                            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjMzMDUxM2ViYTYyM2M3MmNhMjFlMjAiLCJyb2xlIjoidXNlciIsImlhdCI6MTcxNDY4MTk3OH0.2JrVkXVXxzHmFlndsvzAynVKa89b7tOrvR6xOVaC4j0');
-                                        // Update local state with the updated review
+                                            'your_token');
                                         setState(() {
-                                          // Find the index of the review in the reviews list
+                                          // Find the review index and update both text and rating
                                           int reviewIndex = reviews.indexWhere(
                                               (review) =>
                                                   review['_id'] == reviewId);
-                                          // Update the text and rating of the review
                                           reviews[reviewIndex]['text'] =
                                               updatedReviewText;
                                           reviews[reviewIndex]['rate'] =
@@ -679,7 +683,7 @@ class _MyTripOfPlaceState extends State<MyTripOfPlace> {
                                         });
                                         print('Review updated successfully');
                                         Navigator.of(context)
-                                            .pop(); // Close dialog after update
+                                            .pop(); // Close dialog
                                       } catch (error) {
                                         print('Error updating review: $error');
                                         // Handle error, e.g., show error message

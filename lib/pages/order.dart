@@ -20,12 +20,7 @@ class Order extends StatelessWidget {
         listener: (context, state) {
           // TODO: implement listener
           if (state is ShippingSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('We prepare your tickets to ship them to you!'),
-                duration: Duration(seconds: 3),
-              ),
-            );
+            showCustomPopupdelivary(context);
           } else if (state is PayingLoading) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
@@ -70,6 +65,7 @@ class Order extends StatelessWidget {
                       controller: TicketsCubit.get(context).streetField,
                       label: 'Street',
                       hint: 'Enter your street!',
+                      suffixIcon: Icon(size: 24, Icons.home_work),
                     ),
                     const SizedBox(
                       height: 20,
@@ -78,6 +74,7 @@ class Order extends StatelessWidget {
                       controller: TicketsCubit.get(context).cityField,
                       label: 'City',
                       hint: 'Enter your city!',
+                      suffixIcon: Icon(size: 24, Icons.location_city),
                     ),
                     const SizedBox(
                       height: 20,
@@ -86,9 +83,10 @@ class Order extends StatelessWidget {
                       controller: TicketsCubit.get(context).phoneField,
                       label: 'Phone',
                       hint: 'Enter your phone!',
+                      suffixIcon: Icon(size: 24, Icons.phone),
                     ),
                     const SizedBox(
-                      height: 450,
+                      height: 400,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -96,6 +94,9 @@ class Order extends StatelessWidget {
                         PayField(
                           text: 'Pay Online',
                           ontap: () {
+                            if (orderFormKey.currentState!.validate()) {
+                              orderFormKey.currentState!.save();
+                            }
                             TicketsCubit.get(context)
                                 .createOnlineOrder(Dio(), context);
                           },
@@ -108,8 +109,10 @@ class Order extends StatelessWidget {
                             : PayField(
                                 text: 'Pay Cash',
                                 ontap: () {
+                                  if (orderFormKey.currentState!.validate()) {
+                                    orderFormKey.currentState!.save();
+                                  }
                                   TicketsCubit.get(context).createOrder(Dio());
-                                  showCustomPopupdelivary(context);
                                 },
                               ),
                       ],

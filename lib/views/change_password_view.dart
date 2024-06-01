@@ -118,7 +118,6 @@ class ChangePasswordView extends StatelessWidget {
                                   ChangePasswordCubit.get(context)
                                       .confirmNewPasswordController
                                       .text) {
-                                // Show error message for mismatched passwords
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text(

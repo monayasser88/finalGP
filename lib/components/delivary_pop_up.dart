@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jody/pages/account.dart';
 
-
 class DelivaryPopUp extends StatelessWidget {
   const DelivaryPopUp({super.key});
 
@@ -51,13 +50,21 @@ class DelivaryPopUp extends StatelessWidget {
                 height: 32,
               ),
               ElevatedButton(
-                style: const ButtonStyle(
+                style: ButtonStyle(
                   backgroundColor:
-                      MaterialStatePropertyAll<Color>(Color(0xffB68B25)),
-                  minimumSize: MaterialStatePropertyAll(Size(340, 50)),
-                  shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                      const MaterialStatePropertyAll<Color>(Color(0xffB68B25)),
+                  minimumSize: const MaterialStatePropertyAll(Size(340, 50)),
+                  shape: const MaterialStatePropertyAll(RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(12)),
                   )),
+                  foregroundColor: MaterialStateProperty.resolveWith<Color>(
+                    (Set<MaterialState> states) {
+                      if (states.contains(MaterialState.disabled)) {
+                        return Colors.grey;
+                      }
+                      return Colors.white;
+                    },
+                  ),
                 ),
                 child: const Text(
                   'Back Home',

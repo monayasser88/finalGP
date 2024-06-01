@@ -11,7 +11,6 @@ class SearchRepository {
         'https://kemet-gp2024.onrender.com/api/v1/tourismPlaces?keyword=$encodedKeyword';
     print('Search URL: $url');
     final response = await http.get(Uri.parse(url));
-
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       print('API Response: $data');

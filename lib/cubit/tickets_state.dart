@@ -29,6 +29,9 @@ final class ShippingSuccess extends TicketsState {
 final class PayingLoading extends TicketsState {
 }
 
+final class PayingSuccess extends TicketsState {
+}
+
 final class ShippingLoading extends TicketsState {}
 
 final class ShippingError extends TicketsState {
